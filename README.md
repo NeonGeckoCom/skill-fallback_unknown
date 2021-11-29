@@ -1,21 +1,29 @@
-# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg' card_color='#22a7f0' width='50' height='50' style='vertical-align:bottom'/> Unknown Handler
-Capture unrecognized _Utterances_
+# <img src='https://0000.us/klatchat/app/files/neon_images/icons/neon_skill.png' card_color="#FF8600" width="50" style="vertical-align:bottom">fallback-unknown
 
-## About
-Mycroft doesn't know how to do or answer everything (yet).  This _fallback_ is how Mycroft lets you know that, unfortunately, it can't help with what you said.
+## Summary
 
-But wait, there is still hope!  Mycroft is working to get smarter with help from friends.  For who have selected to [Opt In to the Open Dataset](https://home.mycroft.ai/#/setting/basic#opendataset), these missed phrases are aggregated and analyzed to help identify what the world _wants_ their voice assistant to do that it can't yet.  So if millions of people start asking for guava growing tips, we'll promote this as an idea to be handled as a default Skill.
+Unknown request fallback handler. Executes if every other step failed to answer the question.
 
-## Examples
-* "How do I make my guava blue?"
-* "I need a pizza"
-* "Show me the money"
+## Requirements
+
+No special required packages for this skill.
+
+## Description
+
+This fallback is how Neon would let you know if he can't help with what you said and answer your question. This skill will execute as a last resort, and only if you are currently in the wakewords-required mode. If you are skipping wakewords, the failed utterances will be ignored. Neon will try to match the request to Adapt skills, Padatious skills, and all of Fallbacks before finally l reaching it here.
+
+## Troubleshooting
+
+Check your signal handling in `/mycroft/ipc` if you are receiving response from this skill while skipping wake words.
+
+## Contact Support
+
+Use the [link](https://neongecko.com/ContactUs) or [submit an issue on GitHub](https://help.github.com/en/articles/creating-an-issue)
 
 ## Credits
-Mycroft AI (@MycroftAI)
-
-## Category
-**Configuration**
+[Mycroft AI](https://github.com/MycroftAI)
+[NeonDaniel](https://github.com/NeonDaniel)
+[reginaneon](https://github.com/reginaneon)
 
 ## Tags
 #fallback
