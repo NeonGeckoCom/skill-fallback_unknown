@@ -52,51 +52,67 @@ class UnknownSkill(NeonFallbackSkill):
     def initialize(self):
         self.register_fallback(self.handle_fallback, 100)
 
-    def read_voc_lines(self, name):
+    def _read_voc_lines(self, name) -> filter:
+        """
+        Return parsed lines for the specified voc resource
+        :param name: vocab resource name
+        :returns: filter for specified vocab resource
+        """
         with open(self.find_resource(name + '.voc', 'vocab')) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
     def handle_fallback(self, message):
         LOG.debug("Unknown Fallback Checking for Neon!!!")
+        utterance = message.data['utterance']
+
         # This checks if we're pretty sure this was a request intended for Neon
-        if not hasattr(self, "neon_in_request") or self.neon_in_request(message):
-            utterance = message.data['utterance']
+        if not (self.neon_in_request(message) or
+                self.neon_must_respond(message)):
+            return False
 
-            try:
-                self.report_metric('failed-intent', {'utterance': utterance,
-                                                     'device': self.local_config["devVars"]["devType"]})
-            except Exception as e:
-                LOG.error(e)
-                self.log.exception('Error reporting metric')
+        # Ignore likely accidental activations
+        if len(utterance.split()) < 2:
+            return False
 
-            if len(utterance.split()) >= 2:
-                if hasattr(self, "server") and self.server:
-                    LOG.debug(f"Checking if neon must respond: {message.data}")
-                    if hasattr(self, "neon_must_respond") and self.neon_must_respond(message):
-                        if request_from_mobile(message):
-                            self.speak_dialog("websearch")
-                            self.mobile_skill_intent("web_search", {"term": message.data.get('utterance')}, message)
-                            # self.socket_io_emit("web_search", f"&term={message.data.get('utterance')}",
-                            #                     message.context["flac_filename"])
-                        # TODO: Handle server web results here DM
-                else:
-                    for i in ['question', 'who.is', 'why.is']:
-                        for l in self.read_voc_lines(i):
-                            if utterance.startswith(l):
-                                self.log.info('Fallback type: ' + i)
-                                if not self.check_for_signal("SKILLS_useDefaultResponses", -1):
-                                    self.speak_dialog(i, data={'remaining': l.replace(i, '')})
-                                else:
-                                    self.speak("I'm not sure how to help you with that.")
-                                return True
-                    if self.local_config.get("interface", {}).get("wake_word_enabled", True):
-                        if not self.check_for_signal("SKILLS_useDefaultResponses", -1):
-                            self.speak_dialog('unknown')
-                        elif self.check_for_signal("SKILLS_useDefaultResponses", -1):
-                            self.speak("I'm not sure how to help you with that.")
+        # Report an intent failure
+        self.report_metric('failed-intent',
+                           {'utterance': utterance,
+                            'device': self.local_config["devVars"]["devType"]})
+
+        LOG.debug(f"Checking if neon must respond: {message.data}")
+        if self.neon_must_respond(message):
+            if request_from_mobile(message):
+                self.speak_dialog("websearch")
+                self.mobile_skill_intent(
+                    "web_search",
+                    {"term": message.data.get('utterance')}, message)
+            # TODO: Handle server web results here DM
+            return True
+
+        # Determine what kind of question this is to reply appropriately
+        for i in ['question', 'who.is', 'why.is']:
+            for line in self._read_voc_lines(i):
+                if utterance.startswith(line):
+                    LOG.info('Fallback type: ' + i)
+                    # TODO: Refactor default response handling DM
+                    if not self.check_for_signal("SKILLS_useDefaultResponses",
+                                                 -1):
+                        self.speak_dialog(i,
+                                          data={
+                                              'remaining': line.replace(i, '')
+                                          })
+                    else:
+                        self.speak("I'm not sure how to help you with that.")
                     return True
-        # else:
-        #     self.check_for_signal("CORE_andCase")
+
+        # Not a question, if it's for Neon, reply "I don't know"
+        if self.neon_in_request(message):
+            # TODO: Refactor default response handling DM
+            if not self.check_for_signal("SKILLS_useDefaultResponses", -1):
+                self.speak_dialog('unknown')
+            elif self.check_for_signal("SKILLS_useDefaultResponses", -1):
+                self.speak("I'm not sure how to help you with that.")
+        return True
 
 
 def create_skill():
