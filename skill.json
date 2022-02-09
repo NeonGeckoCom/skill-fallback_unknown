@@ -9,7 +9,9 @@
     "warning": "",
     "systemDeps": false,
     "requirements": {
-        "python": [],
+        "python": [
+            "neon-utils~=0.5.7"
+        ],
         "system": {},
         "skill": []
     },
