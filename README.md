@@ -4,10 +4,6 @@
 
 Unknown request fallback handler. Executes if every other step failed to answer the question.
 
-## Requirements
-
-No special required packages for this skill.
-
 ## Description
 
 This fallback is how Neon would let you know if he can't help with what you said and answer your question. This skill will execute as a last resort, and only if you are currently in the wakewords-required mode. If you are skipping wakewords, the failed utterances will be ignored. Neon will try to match the request to Adapt skills, Padatious skills, and all of Fallbacks before finally l reaching it here.
