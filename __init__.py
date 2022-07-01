@@ -63,7 +63,7 @@ class UnknownSkill(NeonFallbackSkill):
             return filter(bool, map(str.strip, f.read().split('\n')))
 
     def handle_fallback(self, message):
-        LOG.debug("Unknown Fallback Checking for Neon!!!")
+        LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
 
         # This checks if we're pretty sure this was a request intended for Neon
