@@ -42,7 +42,8 @@
 
 from neon_utils.message_utils import request_from_mobile
 from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
-from neon_utils import LOG
+from neon_utils.logger import LOG
+from neon_utils.user_utils import get_user_prefs
 
 
 class UnknownSkill(NeonFallbackSkill):
@@ -74,18 +75,22 @@ class UnknownSkill(NeonFallbackSkill):
         if len(utterance.split()) < 2:
             return False
 
-        # Report an intent failure
-        self.report_metric('failed-intent',
-                           {'utterance': utterance,
-                            'device': self.local_config["devVars"]["devType"]})
-
+        try:
+            # Report an intent failure
+            self.report_metric('failed-intent',
+                               {'utterance': utterance,
+                                'device': self.config_core.get("dev_type")})
+        except Exception as e:
+            LOG.exception(e)
         LOG.debug(f"Checking if neon must respond: {message.data}")
         if self.neon_must_respond(message):
             if request_from_mobile(message):
-                self.speak_dialog("websearch")
-                self.mobile_skill_intent(
-                    "web_search",
-                    {"term": message.data.get('utterance')}, message)
+                pass
+                # TODO
+                # self.speak_dialog("websearch")
+                # self.mobile_skill_intent(
+                #     "web_search",
+                #     {"term": message.data.get('utterance')}, message)
             # TODO: Handle server web results here DM
             return True
 
@@ -94,9 +99,8 @@ class UnknownSkill(NeonFallbackSkill):
             for line in self._read_voc_lines(i):
                 if utterance.startswith(line):
                     LOG.info('Fallback type: ' + i)
-                    # TODO: Refactor default response handling DM
-                    if not self.check_for_signal("SKILLS_useDefaultResponses",
-                                                 -1):
+                    if not get_user_prefs(
+                            message)['response_mode'].get("limit_dialog"):
                         self.speak_dialog(i,
                                           data={
                                               'remaining': line.replace(i, '')
@@ -108,9 +112,10 @@ class UnknownSkill(NeonFallbackSkill):
         # Not a question, if it's for Neon, reply "I don't know"
         if self.neon_in_request(message):
             # TODO: Refactor default response handling DM
-            if not self.check_for_signal("SKILLS_useDefaultResponses", -1):
+            if not get_user_prefs(
+                    message)['response_mode'].get("limit_dialog"):
                 self.speak_dialog('unknown')
-            elif self.check_for_signal("SKILLS_useDefaultResponses", -1):
+            else:
                 self.speak("I'm not sure how to help you with that.")
         return True
 
