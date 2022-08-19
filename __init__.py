@@ -69,10 +69,12 @@ class UnknownSkill(NeonFallbackSkill):
         # This checks if we're pretty sure this was a request intended for Neon
         if not (self.neon_in_request(message) or
                 self.neon_must_respond(message)):
+            LOG.info("Ignoring streaming STT or public conversation input")
             return True
 
         # Ignore likely accidental activations
         if len(utterance.split()) < 2:
+            LOG.info(f"Ignoring 1-word input: {utterance}")
             return True
 
         try:
