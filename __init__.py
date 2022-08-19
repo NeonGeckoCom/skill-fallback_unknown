@@ -69,11 +69,13 @@ class UnknownSkill(NeonFallbackSkill):
         # This checks if we're pretty sure this was a request intended for Neon
         if not (self.neon_in_request(message) or
                 self.neon_must_respond(message)):
-            return False
+            LOG.info("Ignoring streaming STT or public conversation input")
+            return True
 
         # Ignore likely accidental activations
         if len(utterance.split()) < 2:
-            return False
+            LOG.info(f"Ignoring 1-word input: {utterance}")
+            return True
 
         try:
             # Report an intent failure
@@ -83,6 +85,7 @@ class UnknownSkill(NeonFallbackSkill):
         except Exception as e:
             LOG.exception(e)
         LOG.debug(f"Checking if neon must respond: {message.data}")
+        # TODO: This should be handled in a separate fallback skill
         if self.neon_must_respond(message):
             if request_from_mobile(message):
                 pass
@@ -99,24 +102,12 @@ class UnknownSkill(NeonFallbackSkill):
             for line in self._read_voc_lines(i):
                 if utterance.startswith(line):
                     LOG.info('Fallback type: ' + i)
-                    if not get_user_prefs(
-                            message)['response_mode'].get("limit_dialog"):
-                        self.speak_dialog(i,
-                                          data={
-                                              'remaining': line.replace(i, '')
-                                          })
-                    else:
-                        self.speak("I'm not sure how to help you with that.")
+                    self.speak_dialog(i,
+                                      data={'remaining': line.replace(i, '')})
                     return True
 
-        # Not a question, if it's for Neon, reply "I don't know"
-        if self.neon_in_request(message):
-            # TODO: Refactor default response handling DM
-            if not get_user_prefs(
-                    message)['response_mode'].get("limit_dialog"):
-                self.speak_dialog('unknown')
-            else:
-                self.speak("I'm not sure how to help you with that.")
+        # Not a question, but it's for Neon, reply "I don't know"
+        self.speak_dialog('unknown')
         return True
 
 
