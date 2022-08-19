@@ -69,11 +69,11 @@ class UnknownSkill(NeonFallbackSkill):
         # This checks if we're pretty sure this was a request intended for Neon
         if not (self.neon_in_request(message) or
                 self.neon_must_respond(message)):
-            return False
+            return True
 
         # Ignore likely accidental activations
         if len(utterance.split()) < 2:
-            return False
+            return True
 
         try:
             # Report an intent failure
@@ -109,14 +109,8 @@ class UnknownSkill(NeonFallbackSkill):
                         self.speak("I'm not sure how to help you with that.")
                     return True
 
-        # Not a question, if it's for Neon, reply "I don't know"
-        if self.neon_in_request(message):
-            # TODO: Refactor default response handling DM
-            if not get_user_prefs(
-                    message)['response_mode'].get("limit_dialog"):
-                self.speak_dialog('unknown')
-            else:
-                self.speak("I'm not sure how to help you with that.")
+        # Not a question, but it's for Neon, reply "I don't know"
+        self.speak_dialog('unknown')
         return True
 
 
