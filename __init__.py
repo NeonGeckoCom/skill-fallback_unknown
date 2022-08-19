@@ -85,6 +85,7 @@ class UnknownSkill(NeonFallbackSkill):
         except Exception as e:
             LOG.exception(e)
         LOG.debug(f"Checking if neon must respond: {message.data}")
+        # TODO: This should be handled in a separate fallback skill
         if self.neon_must_respond(message):
             if request_from_mobile(message):
                 pass
