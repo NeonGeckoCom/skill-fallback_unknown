@@ -122,9 +122,13 @@ class TestSkill(unittest.TestCase):
         message_unknown = Message("test", {"neon_in_request": True,
                                            "utterance": "is it raining"})
 
-        self.assertFalse(self.skill.handle_fallback(message_not_for_neon))
-        self.assertFalse(self.skill.handle_fallback(message_too_short))
+        self.assertTrue(self.skill.handle_fallback(message_not_for_neon))
+        self.skill.speak_dialog.assert_not_called()
+        self.assertTrue(self.skill.handle_fallback(message_too_short))
+        self.skill.speak_dialog.assert_not_called()
+
         self.assertTrue(self.skill.handle_fallback(message_neon_must_respond))
+        self.skill.speak_dialog.assert_not_called()
 
         self.assertTrue(self.skill.handle_fallback(message_question))
         self.skill.speak_dialog.assert_called_once()
