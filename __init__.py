@@ -102,14 +102,8 @@ class UnknownSkill(NeonFallbackSkill):
             for line in self._read_voc_lines(i):
                 if utterance.startswith(line):
                     LOG.info('Fallback type: ' + i)
-                    if not get_user_prefs(
-                            message)['response_mode'].get("limit_dialog"):
-                        self.speak_dialog(i,
-                                          data={
-                                              'remaining': line.replace(i, '')
-                                          })
-                    else:
-                        self.speak("I'm not sure how to help you with that.")
+                    self.speak_dialog(i,
+                                      data={'remaining': line.replace(i, '')})
                     return True
 
         # Not a question, but it's for Neon, reply "I don't know"
