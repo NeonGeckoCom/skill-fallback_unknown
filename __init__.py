@@ -78,6 +78,10 @@ class UnknownSkill(NeonFallbackSkill):
             return True
 
         try:
+            # TODO: Put LED event behind a setting
+            self.bus.emit(message.forward('neon.linear_led.show_animation',
+                                          {'animation': 'blink',
+                                           'color': 'theme'}))
             # Report an intent failure
             self.report_metric('failed-intent',
                                {'utterance': utterance,
