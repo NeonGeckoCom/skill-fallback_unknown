@@ -1,0 +1,8 @@
+skillMetadata:
+  sections:
+    - name: Notification Settings
+      fields:
+        - name: emit_led
+          type: checkbox
+          label: Show LED ring animations on unknown intent
+          value: "false"

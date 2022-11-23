@@ -72,16 +72,18 @@ class UnknownSkill(NeonFallbackSkill):
             LOG.info("Ignoring streaming STT or public conversation input")
             return True
 
+        # Show LED animation indicating we reached the unknown fallback
+        if self.settings.get('emit_led'):
+            self.bus.emit(message.forward('neon.linear_led.show_animation',
+                                          {'animation': 'blink',
+                                           'color': 'theme'}))
+
         # Ignore likely accidental activations
         if len(utterance.split()) < 2:
             LOG.info(f"Ignoring 1-word input: {utterance}")
             return True
 
         try:
-            # TODO: Put LED event behind a setting
-            self.bus.emit(message.forward('neon.linear_led.show_animation',
-                                          {'animation': 'blink',
-                                           'color': 'theme'}))
             # Report an intent failure
             self.report_metric('failed-intent',
                                {'utterance': utterance,
