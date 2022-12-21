@@ -10,7 +10,7 @@
     "systemDeps": false,
     "requirements": {
         "python": [
-            "neon-utils@git+https://github.com/neongeckocom/neon-skill-utils@FIX_OptionalMQDeps"
+            "neon-utils@git+https://github.com/neongeckocom/neon-skill-utils@FIX_SkillOptionalMQDeps"
         ],
         "system": {},
         "skill": []
