@@ -15,7 +15,18 @@ Mycroft.CardDelegate {
 
         ColumnLayout {
             anchors.fill: parent
-            Kirigami.Heading {
+
+            Mycroft.AutoFitLabel {
+                id: utteranceLabel
+                wrapMode: Text.Wrap
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                font.family: "Noto Sans"
+                font.weight: Font.Bold
+                text: qsTr("I Heard:")
+            }
+
+            Mycroft.AutoFitLabel {
                 id: unhandledUtterance
                 wrapMode: Text.Wrap
                 font.family: "Noto Sans"
