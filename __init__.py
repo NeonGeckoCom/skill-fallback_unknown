@@ -82,6 +82,10 @@ class UnknownSkill(NeonFallbackSkill):
         if len(utterance.split()) < 2:
             LOG.info(f"Ignoring 1-word input: {utterance}")
             return True
+        # Show utterance that failed to match an intent
+        if self.settings.get('show_utterances'):
+            self.gui['utterance'] = utterance
+            self.gui.show_page("UnknownIntent")
 
         try:
             # Report an intent failure
