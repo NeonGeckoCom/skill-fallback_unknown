@@ -26,7 +26,7 @@ Mycroft.CardDelegate {
                 text: qsTr("I Heard:")
             }
 
-            Mycroft.AutoFitLabel {
+            Kirigami.Heading {
                 id: unhandledUtterance
                 wrapMode: Text.Wrap
                 font.family: "Noto Sans"
