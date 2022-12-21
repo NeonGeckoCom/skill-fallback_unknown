@@ -1,2 +1,1 @@
-# neon-utils~=1.1
-neon-utils@git+https://github.com/neongeckocom/neon-skill-utils@FIX_MycroftCoreSystemGui
+neon-utils~=1.1,>=1.1.3a10
