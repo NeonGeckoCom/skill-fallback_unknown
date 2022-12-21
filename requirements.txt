@@ -1,1 +1,2 @@
-neon-utils>=1.1.3a12
+# neon-utils>=1.1.3a12
+neon-utils@git+https://github.com/neongeckocom/neon-skill-utils@FIX_OptionalMQDeps
