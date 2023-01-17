@@ -85,7 +85,7 @@ class UnknownSkill(NeonFallbackSkill):
         # Show utterance that failed to match an intent
         if self.settings.get('show_utterances'):
             self.gui['utterance'] = utterance
-            self.gui.show_page("UnknownIntent")
+            self.gui.show_page("UnknownIntent.qml")
 
         try:
             # Report an intent failure
