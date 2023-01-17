@@ -1,0 +1,12 @@
+skillMetadata:
+  sections:
+    - name: Notification Settings
+      fields:
+        - name: emit_led
+          type: checkbox
+          label: Show LED ring animations on unknown intent
+          value: "false"
+        - name: show_utterances
+          type: checkbox
+          label: Show failed utterances on screen for debugging
+          value: "false"
