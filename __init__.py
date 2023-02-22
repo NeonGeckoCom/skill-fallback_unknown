@@ -42,12 +42,26 @@
 
 from neon_utils.message_utils import request_from_mobile
 from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
+from ovos_utils import classproperty
 from ovos_utils.log import LOG
+from ovos_utils.process_utils import RuntimeRequirements
 
 
 class UnknownSkill(NeonFallbackSkill):
     def __init__(self):
         super(UnknownSkill, self).__init__()
+
+    @classproperty
+    def runtime_requirements(self):
+        return RuntimeRequirements(network_before_load=False,
+                                   internet_before_load=False,
+                                   gui_before_load=False,
+                                   requires_internet=False,
+                                   requires_network=False,
+                                   requires_gui=False,
+                                   no_internet_fallback=True,
+                                   no_network_fallback=True,
+                                   no_gui_fallback=True)
 
     def initialize(self):
         self.register_fallback(self.handle_fallback, 100)
