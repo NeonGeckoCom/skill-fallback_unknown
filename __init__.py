@@ -42,8 +42,7 @@
 
 from neon_utils.message_utils import request_from_mobile
 from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
-from neon_utils.logger import LOG
-from neon_utils.user_utils import get_user_prefs
+from ovos_utils.log import LOG
 
 
 class UnknownSkill(NeonFallbackSkill):

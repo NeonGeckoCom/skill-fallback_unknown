@@ -35,6 +35,7 @@ from os.path import dirname, join, exists
 from mock import Mock
 from mycroft_bus_client import Message
 from ovos_utils.messagebus import FakeBus
+from neon_utils.skills import NeonFallbackSkill
 
 from mycroft.skills.skill_loader import SkillLoader
 
@@ -75,7 +76,8 @@ class TestSkill(unittest.TestCase):
 
     def test_00_skill_init(self):
         # Test any parameters expected to be set in init or initialize methods
-        from neon_utils.skills import NeonFallbackSkill
+        from neon_utils.skills.neon_skill import NeonSkill
+        self.assertIsInstance(self.skill, NeonSkill)
         self.assertIsInstance(self.skill, NeonFallbackSkill)
 
     def test_read_voc_lines(self):
