@@ -56,7 +56,7 @@ class UnknownSkill(NeonFallbackSkill):
         return RuntimeRequirements(network_before_load=False,
                                    internet_before_load=False,
                                    gui_before_load=False,
-                                   requires_internet=False,
+                                   requires_internet=True,
                                    requires_network=False,
                                    requires_gui=False,
                                    no_internet_fallback=True,
