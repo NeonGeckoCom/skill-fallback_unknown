@@ -57,7 +57,7 @@ class UnknownSkill(NeonFallbackSkill):
                                    internet_before_load=False,
                                    gui_before_load=False,
                                    requires_internet=True,
-                                   requires_network=False,
+                                   requires_network=True,
                                    requires_gui=False,
                                    no_internet_fallback=True,
                                    no_network_fallback=True,
