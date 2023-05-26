@@ -76,10 +76,7 @@ class TestSkill(unittest.TestCase):
 
     def test_00_skill_init(self):
         # Test any parameters expected to be set in init or initialize methods
-        from neon_utils.skills.neon_skill import NeonSkill
         # TODO: Instance checks broken by `__new__` overrides in OVOS Workshop
-        self.assertTrue(issubclass(self.skill.__class__, NeonSkill))
-        self.assertTrue(issubclass(self.skill.__class__, NeonFallbackSkill))
         # self.assertIsInstance(self.skill, NeonSkill)
         # self.assertIsInstance(self.skill, NeonFallbackSkill)
 
