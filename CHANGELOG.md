@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.2a1) (2023-06-06)
+
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.1a2...0.2.2a1)
+
+**Merged pull requests:**
+
+- Update neon-utils dependency spec [\#39](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/39) ([NeonDaniel](https://github.com/NeonDaniel))
+
 ## [0.2.1a2](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.1a2) (2023-06-06)
 
 [Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.0...0.2.1a2)
