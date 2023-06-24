@@ -1,25 +1,12 @@
 # Changelog
 
-## [0.2.2a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.2a1) (2023-06-06)
+## [0.2.3a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.3a1) (2023-06-15)
 
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.1a2...0.2.2a1)
-
-**Merged pull requests:**
-
-- Update neon-utils dependency spec [\#39](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/39) ([NeonDaniel](https://github.com/NeonDaniel))
-
-## [0.2.1a2](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.1a2) (2023-06-06)
-
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.0...0.2.1a2)
-
-**Implemented enhancements:**
-
-- \[FEAT\] Intent, Resource, and Install Tests [\#32](https://github.com/NeonGeckoCom/skill-fallback_unknown/issues/32)
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.2...0.2.3a1)
 
 **Merged pull requests:**
 
-- Update automation to latest best practices [\#37](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/37) ([NeonDaniel](https://github.com/NeonDaniel))
-- Updated ovos-workshop compat. [\#35](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/35) ([NeonDaniel](https://github.com/NeonDaniel))
+- Deprecate `create_skill` method and update `__init__` for best practices [\#41](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/41) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 

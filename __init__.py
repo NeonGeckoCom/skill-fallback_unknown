@@ -48,9 +48,6 @@ from ovos_utils.process_utils import RuntimeRequirements
 
 
 class UnknownSkill(NeonFallbackSkill):
-    def __init__(self):
-        super(UnknownSkill, self).__init__()
-
     @classproperty
     def runtime_requirements(self):
         return RuntimeRequirements(network_before_load=False,
@@ -63,6 +60,7 @@ class UnknownSkill(NeonFallbackSkill):
                                    no_network_fallback=True,
                                    no_gui_fallback=True)
 
+    # TODO: Move to `__init__` after ovos-workshop stable release
     def initialize(self):
         self.register_fallback(self.handle_fallback, 100)
 
@@ -132,7 +130,3 @@ class UnknownSkill(NeonFallbackSkill):
         # Not a question, but it's for Neon, reply "I don't know"
         self.speak_dialog('unknown')
         return True
-
-
-def create_skill():
-    return UnknownSkill()
