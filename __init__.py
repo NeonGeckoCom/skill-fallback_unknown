@@ -45,6 +45,7 @@ from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
 from ovos_utils import classproperty
 from ovos_utils.log import LOG
 from ovos_utils.process_utils import RuntimeRequirements
+from ovos_workshop.decorators import fallback_handler
 
 
 class UnknownSkill(NeonFallbackSkill):
@@ -60,10 +61,6 @@ class UnknownSkill(NeonFallbackSkill):
                                    no_network_fallback=True,
                                    no_gui_fallback=True)
 
-    # TODO: Move to `__init__` after ovos-workshop stable release
-    def initialize(self):
-        self.register_fallback(self.handle_fallback, 100)
-
     def _read_voc_lines(self, name) -> filter:
         """
         Return parsed lines for the specified voc resource
@@ -73,6 +70,7 @@ class UnknownSkill(NeonFallbackSkill):
         with open(self.find_resource(name + '.voc', 'vocab')) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
+    @fallback_handler(priority=100)
     def handle_fallback(self, message):
         LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
