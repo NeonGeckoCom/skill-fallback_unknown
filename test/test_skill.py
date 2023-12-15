@@ -37,13 +37,13 @@ from mycroft_bus_client import Message
 from ovos_utils.messagebus import FakeBus
 from neon_utils.skills import NeonFallbackSkill
 
-from mycroft.skills.skill_loader import SkillLoader
-
 
 class TestSkill(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        from ovos_workshop.skill_launcher import SkillLoader
+
         bus = FakeBus()
         bus.run_in_thread()
         skill_loader = SkillLoader(bus, dirname(dirname(__file__)))
