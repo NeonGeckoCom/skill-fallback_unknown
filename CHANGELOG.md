@@ -1,12 +1,28 @@
 # Changelog
 
-## [0.2.3a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/0.2.3a1) (2023-06-15)
+## [1.0.1a3](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a3) (2023-12-15)
 
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/0.2.2...0.2.3a1)
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.1a2...1.0.1a3)
 
 **Merged pull requests:**
 
-- Deprecate `create_skill` method and update `__init__` for best practices [\#41](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/41) ([NeonDaniel](https://github.com/NeonDaniel))
+- Testing shared resource test case [\#46](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/46) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.0.1a2](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a2) (2023-12-13)
+
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.1a1...1.0.1a2)
+
+**Merged pull requests:**
+
+- Remove deprecated mobile request handling causing empty responses [\#44](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/44) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [1.0.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a1) (2023-11-22)
+
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.0...1.0.1a1)
+
+**Merged pull requests:**
+
+- Added Ukrainian [\#43](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/43) ([NeonDmitry](https://github.com/NeonDmitry))
 
 
 

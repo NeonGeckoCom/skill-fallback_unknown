@@ -40,8 +40,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from neon_utils.message_utils import request_from_mobile
 from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
+from ovos_bus_client import Message
 from ovos_utils import classproperty
 from ovos_utils.log import LOG
 from ovos_utils.process_utils import RuntimeRequirements
@@ -73,13 +73,13 @@ class UnknownSkill(NeonFallbackSkill):
         with open(self.find_resource(name + '.voc', 'vocab')) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
-    def handle_fallback(self, message):
+    def handle_fallback(self, message: Message):
         LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
 
         # This checks if we're pretty sure this was a request intended for Neon
-        if not (self.neon_in_request(message) or
-                self.neon_must_respond(message)):
+        if not any((self.neon_in_request(message),
+                    self.neon_must_respond(message))):
             LOG.info("Ignoring streaming STT or public conversation input")
             return True
 
@@ -106,17 +106,6 @@ class UnknownSkill(NeonFallbackSkill):
         except Exception as e:
             LOG.exception(e)
         LOG.debug(f"Checking if neon must respond: {message.data}")
-        # TODO: This should be handled in a separate fallback skill
-        if self.neon_must_respond(message):
-            if request_from_mobile(message):
-                pass
-                # TODO
-                # self.speak_dialog("websearch")
-                # self.mobile_skill_intent(
-                #     "web_search",
-                #     {"term": message.data.get('utterance')}, message)
-            # TODO: Handle server web results here DM
-            return True
 
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
