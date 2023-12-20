@@ -26,53 +26,21 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import shutil
-import unittest
+import os
+import sys
 import pytest
 
-from os import mkdir
-from os.path import dirname, join, exists
+from os.path import dirname
 from mock import Mock
 from mycroft_bus_client import Message
-from ovos_utils.messagebus import FakeBus
 from neon_utils.skills import NeonFallbackSkill
 
+from neon_minerva.tests.skill_unit_test_base import SkillTestCase
 
-class TestSkill(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        from ovos_workshop.skill_launcher import SkillLoader
+os.environ.setdefault("TEST_SKILL_ENTRYPOINT", dirname(dirname(__file__)))
 
-        bus = FakeBus()
-        bus.run_in_thread()
-        skill_loader = SkillLoader(bus, dirname(dirname(__file__)))
-        skill_loader.load()
-        cls.skill = skill_loader.instance
 
-        # Define a directory to use for testing
-        cls.test_fs = join(dirname(__file__), "skill_fs")
-        if not exists(cls.test_fs):
-            mkdir(cls.test_fs)
-
-        # Override the fs paths to use the test directory
-        cls.skill.settings_write_path = cls.test_fs
-        cls.skill.file_system.path = cls.test_fs
-
-        # Override speak and speak_dialog to test passed arguments
-        cls.skill.speak = Mock()
-        cls.skill.speak_dialog = Mock()
-
-    def setUp(self):
-        self.skill.speak.reset_mock()
-        self.skill.speak_dialog.reset_mock()
-
-    def tearDown(self) -> None:
-        self.skill.bus.remove_all_listeners("neon.wake_words_state")
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        shutil.rmtree(cls.test_fs)
-
+class TestSkill(SkillTestCase):
     def test_00_skill_init(self):
         from neon_utils.skills.neon_skill import NeonSkill
         self.assertIsInstance(self.skill, NeonSkill)
@@ -88,7 +56,7 @@ class TestSkill(unittest.TestCase):
                 self.assertIsNotNone(line)
 
     def test_handle_fallback(self):
-        def neon_in_request(msg: Message):
+        def neon_in_request(msg: Message, *args, **kwargs):
             if msg.data.get("neon_in_request"):
                 return True
             return False
@@ -98,12 +66,9 @@ class TestSkill(unittest.TestCase):
                 return True
             return False
 
-        def check_for_signal(*args, **kwargs):
-            return False
+        sys.modules[self.skill.__module__].neon_must_respond = neon_must_respond
+        sys.modules[self.skill.__module__].request_for_neon = neon_in_request
 
-        self.skill.neon_in_request = neon_in_request
-        self.skill.neon_must_respond = neon_must_respond
-        self.skill.check_for_signal = check_for_signal
         self.skill.report_metric = Mock()
 
         message_not_for_neon = Message("test",
