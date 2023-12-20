@@ -39,7 +39,6 @@ from neon_utils.skills import NeonFallbackSkill
 
 
 class TestSkill(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls) -> None:
         from ovos_workshop.skill_launcher import SkillLoader
@@ -122,7 +121,9 @@ class TestSkill(unittest.TestCase):
                                           "utterance": "why is rain"})
         message_unknown = Message("test", {"neon_in_request": True,
                                            "utterance": "is it raining"})
-
+        message_transact_client = Message("test", {"neon_in_request": True,
+                                                   "utterance": "short"},
+                                          {"client": "mq_api"})
         self.assertTrue(self.skill.handle_fallback(message_not_for_neon))
         self.skill.speak_dialog.assert_not_called()
         self.assertTrue(self.skill.handle_fallback(message_too_short))
@@ -150,6 +151,12 @@ class TestSkill(unittest.TestCase):
         self.skill.speak_dialog.reset_mock()
 
         self.assertTrue(self.skill.handle_fallback(message_unknown))
+        self.skill.speak_dialog.assert_called_once()
+        args = self.skill.speak_dialog.call_args
+        self.assertEqual(args[0][0], "unknown")
+        self.skill.speak_dialog.reset_mock()
+
+        self.assertTrue(self.skill.handle_fallback(message_transact_client))
         self.skill.speak_dialog.assert_called_once()
         args = self.skill.speak_dialog.call_args
         self.assertEqual(args[0][0], "unknown")

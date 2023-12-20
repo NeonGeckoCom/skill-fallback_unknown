@@ -48,6 +48,12 @@ from ovos_utils.process_utils import RuntimeRequirements
 
 
 class UnknownSkill(NeonFallbackSkill):
+    def __init__(self, *args, **kwargs):
+        NeonFallbackSkill.__init__(self, *args, **kwargs)
+        self.register_fallback(self.handle_fallback, 100)
+        # Set of clients that always expect a response
+        self._transactional_clients = {"mq_api"}
+
     @classproperty
     def runtime_requirements(self):
         return RuntimeRequirements(network_before_load=False,
@@ -59,10 +65,6 @@ class UnknownSkill(NeonFallbackSkill):
                                    no_internet_fallback=True,
                                    no_network_fallback=True,
                                    no_gui_fallback=True)
-
-    # TODO: Move to `__init__` after ovos-workshop stable release
-    def initialize(self):
-        self.register_fallback(self.handle_fallback, 100)
 
     def _read_voc_lines(self, name) -> filter:
         """
@@ -90,7 +92,8 @@ class UnknownSkill(NeonFallbackSkill):
                                            'color': 'theme'}))
 
         # Ignore likely accidental activations
-        if len(utterance.split()) < 2:
+        if len(utterance.split()) < 2 and message.context.get('client') not in \
+                self._transactional_clients:
             LOG.info(f"Ignoring 1-word input: {utterance}")
             return True
         # Show utterance that failed to match an intent
