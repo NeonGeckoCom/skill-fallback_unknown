@@ -41,6 +41,7 @@
 # limitations under the License.
 
 from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
+from neon_utils.message_utils import neon_must_respond, request_for_neon
 from ovos_bus_client import Message
 from ovos_utils import classproperty
 from ovos_utils.log import LOG
@@ -78,10 +79,13 @@ class UnknownSkill(NeonFallbackSkill):
     def handle_fallback(self, message: Message):
         LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
-
+        client = message.context.get('client')
+        ww_state = self.config_core.get("listener", {}).get("wake_word_enabled",
+                                                            True)
         # This checks if we're pretty sure this was a request intended for Neon
-        if not any((self.neon_in_request(message),
-                    self.neon_must_respond(message))):
+        if not any((request_for_neon(message, "neon", self.voc_match, ww_state),
+                    neon_must_respond(message),
+                    client in self._transactional_clients)):
             LOG.info("Ignoring streaming STT or public conversation input")
             return True
 
@@ -92,8 +96,8 @@ class UnknownSkill(NeonFallbackSkill):
                                            'color': 'theme'}))
 
         # Ignore likely accidental activations
-        if len(utterance.split()) < 2 and message.context.get('client') not in \
-                self._transactional_clients:
+        if len(utterance.split()) < 2 and \
+                client not in self._transactional_clients:
             LOG.info(f"Ignoring 1-word input: {utterance}")
             return True
         # Show utterance that failed to match an intent
