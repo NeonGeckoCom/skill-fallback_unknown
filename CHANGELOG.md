@@ -1,28 +1,12 @@
 # Changelog
 
-## [1.0.1a3](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a3) (2023-12-15)
+## [1.1.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.1.1a1) (2023-12-20)
 
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.1a2...1.0.1a3)
-
-**Merged pull requests:**
-
-- Testing shared resource test case [\#46](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/46) ([NeonDaniel](https://github.com/NeonDaniel))
-
-## [1.0.1a2](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a2) (2023-12-13)
-
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.1a1...1.0.1a2)
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.1.0...1.1.1a1)
 
 **Merged pull requests:**
 
-- Remove deprecated mobile request handling causing empty responses [\#44](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/44) ([NeonDaniel](https://github.com/NeonDaniel))
-
-## [1.0.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.0.1a1) (2023-11-22)
-
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.0.0...1.0.1a1)
-
-**Merged pull requests:**
-
-- Added Ukrainian [\#43](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/43) ([NeonDmitry](https://github.com/NeonDmitry))
+- Update init and Unknown response handling [\#48](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/48) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 
