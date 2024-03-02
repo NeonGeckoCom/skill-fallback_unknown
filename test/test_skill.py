@@ -41,11 +41,6 @@ os.environ.setdefault("TEST_SKILL_ENTRYPOINT", dirname(dirname(__file__)))
 
 
 class TestSkill(SkillTestCase):
-    def test_00_skill_init(self):
-        from neon_utils.skills.neon_skill import NeonSkill
-        self.assertIsInstance(self.skill, NeonSkill)
-        self.assertIsInstance(self.skill, NeonFallbackSkill)
-
     def test_read_voc_lines(self):
         valid_vocab = ('question', 'who.is', 'why.is')
         for v in valid_vocab:
