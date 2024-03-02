@@ -40,20 +40,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from neon_utils.skills.neon_fallback_skill import NeonFallbackSkill
-from neon_utils.message_utils import neon_must_respond, request_for_neon
+from ovos_workshop.decorators import fallback_handler
+from ovos_workshop.skills.fallback import FallbackSkill
+from neon_utils.message_utils import request_for_neon
 from ovos_bus_client import Message
 from ovos_utils import classproperty
 from ovos_utils.log import LOG
 from ovos_utils.process_utils import RuntimeRequirements
 
 
-class UnknownSkill(NeonFallbackSkill):
-    def __init__(self, *args, **kwargs):
-        NeonFallbackSkill.__init__(self, *args, **kwargs)
-        self.register_fallback(self.handle_fallback, 100)
-        # Set of clients that always expect a response
-        self._transactional_clients = {"mq_api"}
+class UnknownSkill(FallbackSkill):
+    # Set of clients that always expect a response
+    _transactional_clients = {"mq_api", "klat", "mobile"}
 
     @classproperty
     def runtime_requirements(self):
@@ -76,6 +74,7 @@ class UnknownSkill(NeonFallbackSkill):
         with open(self.find_resource(name + '.voc', 'vocab')) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
+    @fallback_handler(priority=100)
     def handle_fallback(self, message: Message):
         LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
@@ -84,7 +83,6 @@ class UnknownSkill(NeonFallbackSkill):
                                                             True)
         # This checks if we're pretty sure this was a request intended for Neon
         if not any((request_for_neon(message, "neon", self.voc_match, ww_state),
-                    neon_must_respond(message),
                     client in self._transactional_clients)):
             LOG.info("Ignoring streaming STT or public conversation input")
             return True
@@ -103,15 +101,14 @@ class UnknownSkill(NeonFallbackSkill):
         # Show utterance that failed to match an intent
         if self.settings.get('show_utterances'):
             self.gui['utterance'] = utterance
-            self.gui.show_page("UnknownIntent.qml")
+            self.gui.show_page("UnknownIntent")
 
-        try:
-            # Report an intent failure
-            self.report_metric('failed-intent',
-                               {'utterance': utterance,
-                                'device': self.config_core.get("dev_type")})
-        except Exception as e:
-            LOG.exception(e)
+        # Report an intent failure
+        self.bus.emit(Message("neon.metric", {"name": "failed-intent",
+                                              'utterance': utterance,
+                                              'client': client
+                                              }))
+
         LOG.debug(f"Checking if neon must respond: {message.data}")
 
         # Determine what kind of question this is to reply appropriately
