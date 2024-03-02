@@ -101,15 +101,14 @@ class UnknownSkill(FallbackSkill):
         # Show utterance that failed to match an intent
         if self.settings.get('show_utterances'):
             self.gui['utterance'] = utterance
-            self.gui.show_page("UnknownIntent.qml")
+            self.gui.show_page("UnknownIntent")
 
-        try:
-            # Report an intent failure
-            self.report_metric('failed-intent',
-                               {'utterance': utterance,
-                                'device': self.config_core.get("dev_type")})
-        except Exception as e:
-            LOG.exception(e)
+        # Report an intent failure
+        self.bus.emit(Message("neon.metric", {"name": "failed-intent",
+                                              'utterance': utterance,
+                                              'client': client
+                                              }))
+
         LOG.debug(f"Checking if neon must respond: {message.data}")
 
         # Determine what kind of question this is to reply appropriately
