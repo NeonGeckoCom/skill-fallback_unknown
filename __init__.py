@@ -50,10 +50,8 @@ from ovos_utils.process_utils import RuntimeRequirements
 
 
 class UnknownSkill(FallbackSkill):
-    def __init__(self, *args, **kwargs):
-        FallbackSkill.__init__(self, *args, **kwargs)
-        # Set of clients that always expect a response
-        self._transactional_clients = {"mq_api", "klat", "mobile"}
+    # Set of clients that always expect a response
+    _transactional_clients = {"mq_api", "klat", "mobile"}
 
     @classproperty
     def runtime_requirements(self):
