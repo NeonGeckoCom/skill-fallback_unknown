@@ -1,12 +1,20 @@
 # Changelog
 
-## [1.1.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.1.1a1) (2023-12-20)
+## [2.0.0](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/2.0.0) (2024-03-27)
 
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.1.0...1.1.1a1)
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.2.1a1...2.0.0)
+
+**Implemented enhancements:**
+
+- Refactor `neon_must_respond` [\#7](https://github.com/NeonGeckoCom/skill-fallback_unknown/issues/7)
+
+## [1.2.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.2.1a1) (2024-03-02)
+
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.2.0...1.2.1a1)
 
 **Merged pull requests:**
 
-- Update init and Unknown response handling [\#48](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/48) ([NeonDaniel](https://github.com/NeonDaniel))
+- Extend FallbackSkill from ovos-workshop [\#50](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/50) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 
