@@ -39,6 +39,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from os.path import join, isfile
+
 from ovos_bus_client.util import get_message_lang
 from ovos_workshop.decorators import fallback_handler
 from ovos_workshop.skills.fallback import FallbackSkill
@@ -65,15 +67,20 @@ class UnknownSkill(FallbackSkill):
                                    no_network_fallback=True,
                                    no_gui_fallback=True)
 
-    def _read_voc_lines(self, name, lang) -> filter:
+    def _read_voc_lines(self, name) -> filter:
         """
         Return parsed lines for the specified voc resource
         :param name: vocab resource name
         :returns: filter for specified vocab resource
         """
         vocab = self.find_resource(f"{name}.voc", 'vocab',
-                                   lang=lang)
-        LOG.info(f"Reading voc file {vocab} for lang={lang}")
+                                   lang=self.lang)
+        if self.lang not in vocab:
+            test_path = join(self.root_dir, "vocab", self.lang, f"{name}.voc")
+            if isfile(test_path):
+                LOG.warning(f"Resolved {vocab} but using {test_path}")
+                vocab = test_path
+        LOG.debug(f"Reading voc file {vocab} for lang={self.lang}")
         with open(vocab) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
@@ -115,10 +122,10 @@ class UnknownSkill(FallbackSkill):
         LOG.debug(f"Checking if neon must respond: {message.data}")
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
-            for line in self._read_voc_lines(i, self.lang):
+            for line in self._read_voc_lines(i):
                 LOG.info(f"Checking for pattern: {line}.*")
                 if utterance.startswith(line):
-                    LOG.info(f'Fallback type: {i} ({utterance}')
+                    LOG.info(f'Fallback type: {i} ({utterance})')
                     self.speak_dialog(i,
                                       data={'remaining': line.replace(i, '')})
                     return True
