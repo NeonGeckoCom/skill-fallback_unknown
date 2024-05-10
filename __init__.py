@@ -76,8 +76,8 @@ class UnknownSkill(FallbackSkill):
 
     @fallback_handler(priority=100)
     def handle_fallback(self, message: Message):
-        LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
+        LOG.info(f"Unknown Fallback handling: {utterance}")
         client = message.context.get('client')
         ww_state = self.config_core.get("listener", {}).get("wake_word_enabled",
                                                             True)
@@ -115,7 +115,7 @@ class UnknownSkill(FallbackSkill):
         for i in ['question', 'who.is', 'why.is']:
             for line in self._read_voc_lines(i):
                 if utterance.startswith(line):
-                    LOG.info('Fallback type: ' + i)
+                    LOG.info(f'Fallback type: {i} ({utterance}')
                     self.speak_dialog(i,
                                       data={'remaining': line.replace(i, '')})
                     return True
