@@ -66,22 +66,29 @@ class TestSkill(SkillTestCase):
         self.skill.report_metric = Mock()
 
         message_not_for_neon = Message("test",
-                                       {"utterance": "this is long enough"})
+                                       {"utterance": "this is long enough",
+                                        "lang": "en-us"})
         message_too_short = Message("test", {"neon_in_request": True,
-                                             "utterance": "short"})
+                                             "utterance": "short",
+                                             "lang": "en-us"})
         # message_neon_must_respond = Message("test",
         #                                     {"neon_must_respond": True,
         #                                      "utterance": "test search"})
         message_question = Message("test", {"neon_in_request": True,
-                                            "utterance": "what is rain"})
+                                            "utterance": "what is rain",
+                                            "lang": "en-us"})
         message_who_is = Message("test", {"neon_in_request": True,
-                                          "utterance": "who is rain"})
+                                          "utterance": "who is rain",
+                                          "lang": "en-us"})
         message_why_is = Message("test", {"neon_in_request": True,
-                                          "utterance": "why is rain"})
+                                          "utterance": "why is rain",
+                                          "lang": "en-us"})
         message_unknown = Message("test", {"neon_in_request": True,
-                                           "utterance": "is it raining"})
+                                           "utterance": "is it raining",
+                                           "lang": "en-us"})
         message_transact_client = Message("test", {"neon_in_request": True,
-                                                   "utterance": "short"},
+                                                   "utterance": "short",
+                                                   "lang": "en-us"},
                                           {"client": "mq_api"})
         self.assertTrue(self.skill.handle_fallback(message_not_for_neon))
         self.skill.speak_dialog.assert_not_called()
