@@ -32,8 +32,7 @@ import pytest
 
 from os.path import dirname
 from mock import Mock
-from mycroft_bus_client import Message
-from neon_utils.skills import NeonFallbackSkill
+from ovos_bus_client.message import Message
 
 from neon_minerva.tests.skill_unit_test_base import SkillTestCase
 
