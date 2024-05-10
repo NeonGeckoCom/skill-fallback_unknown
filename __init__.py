@@ -113,10 +113,9 @@ class UnknownSkill(FallbackSkill):
                                               }))
 
         LOG.debug(f"Checking if neon must respond: {message.data}")
-        lang = get_message_lang(message)
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
-            for line in self._read_voc_lines(i, lang):
+            for line in self._read_voc_lines(i, self.lang):
                 LOG.info(f"Checking for pattern: {line}.*")
                 if utterance.startswith(line):
                     LOG.info(f'Fallback type: {i} ({utterance}')
