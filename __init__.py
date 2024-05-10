@@ -39,7 +39,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+from ovos_bus_client.util import get_message_lang
 from ovos_workshop.decorators import fallback_handler
 from ovos_workshop.skills.fallback import FallbackSkill
 from neon_utils.message_utils import request_for_neon
@@ -65,13 +65,16 @@ class UnknownSkill(FallbackSkill):
                                    no_network_fallback=True,
                                    no_gui_fallback=True)
 
-    def _read_voc_lines(self, name) -> filter:
+    def _read_voc_lines(self, name, lang) -> filter:
         """
         Return parsed lines for the specified voc resource
         :param name: vocab resource name
         :returns: filter for specified vocab resource
         """
-        with open(self.find_resource(name + '.voc', 'vocab')) as f:
+        vocab = self.find_resource(f"{name}.voc", 'vocab',
+                                   lang=lang)
+        LOG.info(f"Reading voc file {vocab} for lang={lang}")
+        with open(vocab) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
     @fallback_handler(priority=100)
@@ -110,10 +113,10 @@ class UnknownSkill(FallbackSkill):
                                               }))
 
         LOG.debug(f"Checking if neon must respond: {message.data}")
-
+        lang = get_message_lang(message)
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
-            for line in self._read_voc_lines(i):
+            for line in self._read_voc_lines(i, lang):
                 LOG.info(f"Checking for pattern: {line}.*")
                 if utterance.startswith(line):
                     LOG.info(f'Fallback type: {i} ({utterance}')
