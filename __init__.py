@@ -114,6 +114,7 @@ class UnknownSkill(FallbackSkill):
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
             for line in self._read_voc_lines(i):
+                LOG.info(f"Checking for pattern: {line}.*")
                 if utterance.startswith(line):
                     LOG.info(f'Fallback type: {i} ({utterance}')
                     self.speak_dialog(i,
