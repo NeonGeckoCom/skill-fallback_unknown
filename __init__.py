@@ -40,6 +40,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from os.path import join, isfile
 from ovos_workshop.decorators import fallback_handler
 from ovos_workshop.skills.fallback import FallbackSkill
 from neon_utils.message_utils import request_for_neon
@@ -71,13 +72,21 @@ class UnknownSkill(FallbackSkill):
         :param name: vocab resource name
         :returns: filter for specified vocab resource
         """
-        with open(self.find_resource(name + '.voc', 'vocab')) as f:
+        vocab = self.find_resource(f"{name}.voc", 'vocab',
+                                   lang=self.lang)
+        if self.lang not in vocab:
+            test_path = join(self.root_dir, "vocab", self.lang, f"{name}.voc")
+            if isfile(test_path):
+                LOG.warning(f"Resolved {vocab} but using {test_path}")
+                vocab = test_path
+        LOG.debug(f"Reading voc file {vocab} for lang={self.lang}")
+        with open(vocab) as f:
             return filter(bool, map(str.strip, f.read().split('\n')))
 
     @fallback_handler(priority=100)
     def handle_fallback(self, message: Message):
-        LOG.info("Unknown Fallback Checking for Neon!!!")
         utterance = message.data['utterance']
+        LOG.info(f"Unknown Fallback handling: {utterance}")
         client = message.context.get('client')
         ww_state = self.config_core.get("listener", {}).get("wake_word_enabled",
                                                             True)
@@ -110,12 +119,11 @@ class UnknownSkill(FallbackSkill):
                                               }))
 
         LOG.debug(f"Checking if neon must respond: {message.data}")
-
         # Determine what kind of question this is to reply appropriately
         for i in ['question', 'who.is', 'why.is']:
             for line in self._read_voc_lines(i):
                 if utterance.startswith(line):
-                    LOG.info('Fallback type: ' + i)
+                    LOG.info(f'Fallback type: {i} ({utterance})')
                     self.speak_dialog(i,
                                       data={'remaining': line.replace(i, '')})
                     return True
