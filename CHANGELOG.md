@@ -1,20 +1,20 @@
 # Changelog
 
-## [2.0.0](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/2.0.0) (2024-03-27)
+## [2.0.1a2](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/2.0.1a2) (2024-05-10)
 
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.2.1a1...2.0.0)
-
-**Implemented enhancements:**
-
-- Refactor `neon_must_respond` [\#7](https://github.com/NeonGeckoCom/skill-fallback_unknown/issues/7)
-
-## [1.2.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/1.2.1a1) (2024-03-02)
-
-[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/1.2.0...1.2.1a1)
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/2.0.1a1...2.0.1a2)
 
 **Merged pull requests:**
 
-- Extend FallbackSkill from ovos-workshop [\#50](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/50) ([NeonDaniel](https://github.com/NeonDaniel))
+- Patch out file resolution error [\#54](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/54) ([NeonDaniel](https://github.com/NeonDaniel))
+
+## [2.0.1a1](https://github.com/NeonGeckoCom/skill-fallback_unknown/tree/2.0.1a1) (2024-04-25)
+
+[Full Changelog](https://github.com/NeonGeckoCom/skill-fallback_unknown/compare/2.0.0...2.0.1a1)
+
+**Merged pull requests:**
+
+- Loosen dependencies to support ovos-utils 0.1 [\#52](https://github.com/NeonGeckoCom/skill-fallback_unknown/pull/52) ([NeonDaniel](https://github.com/NeonDaniel))
 
 
 
