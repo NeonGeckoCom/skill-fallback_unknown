@@ -44,7 +44,7 @@ from os.path import join, isfile
 from ovos_workshop.decorators import fallback_handler
 from ovos_workshop.skills.fallback import FallbackSkill
 from neon_utils.message_utils import request_for_neon
-from ovos_bus_client import Message
+from ovos_bus_client.message import Message
 from ovos_utils import classproperty
 from ovos_utils.log import LOG
 from ovos_utils.process_utils import RuntimeRequirements
